@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <memory>
 #include <type_traits>
 #include <functional>
@@ -41,6 +42,9 @@ public:
     {}
 
     Ret operator() (Args ...args) const {
+        if (!m_base) [[unlikely]]
+            throw std::runtime_error("function not initialized");
+        
         return m_base->call(std::forward<Args>(args)...);
     }
 };
