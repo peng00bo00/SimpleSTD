@@ -28,7 +28,7 @@ private:
         FuncImpl(F f) : m_f(std::move(f)) {}
 
         virtual Ret call(Args ...args) override {
-            return m_f(std::forward<Args>(args)...);
+            return std::invoke(m_f, std::forward<Args>(args)...);
         }
     };
 
