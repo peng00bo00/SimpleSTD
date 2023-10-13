@@ -4,6 +4,9 @@
 #include <type_traits>
 #include <functional>
 
+namespace SimpleSTL
+{
+
 template <typename FnSig>
 struct Function {
     static_assert(!std::is_same_v<FnSig, FnSig>, "not a valid function signature");
@@ -41,3 +44,5 @@ public:
         return m_base->call(std::forward<Args>(args)...);
     }
 };
+
+}
