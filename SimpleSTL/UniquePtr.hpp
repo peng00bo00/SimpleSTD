@@ -56,6 +56,11 @@ public:
         m_p = p;
     }
 
+    template <class U, class UDeleter> requires (std::convertible_to<U *, T *>) // 有 C++20 的写法
+    UniquePtr(UniquePtr<U, UDeleter> &&that) {  // 从子类型U的智能指针转换到T类型的智能指针
+        m_p = exchange(that.m_p, nullptr);
+    }
+
     ~UniquePtr() {
         if (m_p) Deleter{}(m_p);
     }
