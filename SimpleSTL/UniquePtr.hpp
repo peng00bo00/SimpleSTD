@@ -60,6 +60,8 @@ public:
 
     // copy constructor
     UniquePtr(UniquePtr const & that) = delete;
+
+    // copy assignment
     UniquePtr &operator= (UniquePtr const &that) = delete;
 
     // move constructor
