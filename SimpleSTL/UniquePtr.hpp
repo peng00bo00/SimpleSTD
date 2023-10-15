@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdio>
 #include <utility>
 #include <concepts>
@@ -96,14 +98,30 @@ public:
         m_p = p;
     }
 
-    // operators
+    // * operator shortcut
     T &operator*() const {
         return *m_p;
     }
 
+    // -> operator shortcut
     T *operator->() const {
         return m_p;
     }
 };
+
+template <typename T, typename Deleter>
+struct UniquePtr<T[], Deleter> : UniquePtr<T, Deleter> {};
+
+// makeUnique()
+template <typename T, typename ...Args>
+UniquePtr<T> makeUnique(Args &&...args) {
+    return UniquePtr<T>(new T(std::forward<Args>(args)...));
+}
+
+// makeUniqueForOverwrite()
+template <typename T>
+UniquePtr<T> makeUniqueForOverwrite() {
+    return UniquePtr<T>(new T);
+}
 
 }
