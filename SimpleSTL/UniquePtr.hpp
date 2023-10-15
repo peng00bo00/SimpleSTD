@@ -5,6 +5,7 @@
 namespace SimpleSTL
 {
 
+// DefaultDeleter
 template <typename T>
 struct DefaultDeleter {
     void operator() (T *p) const {
@@ -26,9 +27,27 @@ struct DefaultDeleter<FILE> {
     }
 };
 
+// UniquePtr
 template <typename T, typename Deleter = DefaultDeleter<T>>
 struct UniquePtr {
+private:
+    T *m_p;
 
+    template <typename U, typename UDeleter>
+    friend struct UniquePtr;
+
+public:
+    UniquePtr(std::nullptr_t dummy = nullptr) {
+        m_p = nullptr;
+    }
+
+    explicit UniquePtr(T *p) {
+        m_p = p;
+    }
+
+    ~UniquePtr() {
+        if (m_p) Deleter{}(m_p);
+    }
 };
 
 }
