@@ -27,6 +27,15 @@ struct DefaultDeleter<FILE> {
     }
 };
 
+// exchange
+template <typename T, typename U>
+T exchange(T &dst, U &&val) {
+    T tmp = std::move(dst);
+    dst = std::forward<U>(val);
+
+    return tmp;
+}
+
 // UniquePtr
 template <typename T, typename Deleter = DefaultDeleter<T>>
 struct UniquePtr {
@@ -47,6 +56,51 @@ public:
 
     ~UniquePtr() {
         if (m_p) Deleter{}(m_p);
+    }
+
+    // copy constructor
+    UniquePtr(UniquePtr const & that) = delete;
+    UniquePtr &operator= (UniquePtr const &that) = delete;
+
+    // move constructor
+    UniquePtr(UniquePtr &&that) {
+        m_p = exchange(that.m_p, nullptr);
+    }
+
+    // move assignment
+    UniquePtr &operator=(UniquePtr &&that) {
+        if (this != &that) [[likely]] {
+            if (m_p)
+                Deleter{}(m_p);
+            m_p = exchange(that.m_p, nullptr);
+        }
+        return *this;
+    }
+
+    // get()
+    T *get() const {
+        return m_p;
+    }
+
+    // release()
+    T *release() const {
+        return exchange(m_p, nullptr);
+    }
+
+    // reset()
+    void reset(T *p = nullptr) {
+        if (m_p) Deleter{}(m_p);
+
+        m_p = p;
+    }
+
+    // operators
+    T &operator*() const {
+        return *m_p;
+    }
+
+    T *operator->() const {
+        return m_p;
     }
 };
 
