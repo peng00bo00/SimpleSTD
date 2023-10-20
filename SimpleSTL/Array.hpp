@@ -93,6 +93,66 @@ struct Array{
     static constexpr size_t max_size() noexcept {
         return _N;
     }
+
+    _Tp const *cdata() const noexcept {
+        return _M_elements;
+    }
+
+    _Tp const *data() const noexcept {
+        return _M_elements;
+    }
+
+    _Tp *data() noexcept {
+        return _M_elements;
+    }
+
+    _Tp const *cbegin() const noexcept {
+        return _M_elements;
+    }
+
+    _Tp const *cend() const noexcept {
+        return _M_elements + _N;
+    }
+
+    _Tp const *begin() const noexcept {
+        return _M_elements;
+    }
+
+    _Tp const *end() const noexcept {
+        return _M_elements + _N;
+    }
+
+    _Tp *begin() noexcept {
+        return _M_elements;
+    }
+
+    _Tp *end() noexcept {
+        return _M_elements + _N;
+    }
+
+    std::reverse_iterator<_Tp const *> crbegin() const noexcept {
+        return std::make_reverse_iterator(_M_elements);
+    }
+
+    std::reverse_iterator<_Tp const *> crend() const noexcept {
+        return std::make_reverse_iterator(_M_elements + _N);
+    }
+
+    std::reverse_iterator<_Tp const *> rbegin() const noexcept {
+        return std::make_reverse_iterator(_M_elements);
+    }
+
+    std::reverse_iterator<_Tp const *> rend() const noexcept {
+        return std::make_reverse_iterator(_M_elements + _N);
+    }
+
+    std::reverse_iterator<_Tp *> rbegin() noexcept {
+        return std::make_reverse_iterator(_M_elements);
+    }
+
+    std::reverse_iterator<_Tp *> rend() noexcept {
+        return std::make_reverse_iterator(_M_elements + _N);
+    }
 };
 
 template <typename _Tp>
