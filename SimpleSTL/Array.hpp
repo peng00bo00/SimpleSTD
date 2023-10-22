@@ -20,7 +20,7 @@ namespace SimpleSTL
 {
 
 template <typename _Tp, size_t _N>
-struct Array{
+struct Array {
     using value_type             = _Tp;
     using pointer                = _Tp *;
     using const_pointer          = _Tp const *;
@@ -131,33 +131,154 @@ struct Array{
     }
 
     std::reverse_iterator<_Tp const *> crbegin() const noexcept {
-        return std::make_reverse_iterator(_M_elements);
+        return std::make_reverse_iterator(_M_elements + _N);
     }
 
     std::reverse_iterator<_Tp const *> crend() const noexcept {
-        return std::make_reverse_iterator(_M_elements + _N);
+        return std::make_reverse_iterator(_M_elements);
     }
 
     std::reverse_iterator<_Tp const *> rbegin() const noexcept {
-        return std::make_reverse_iterator(_M_elements);
+        return std::make_reverse_iterator(_M_elements + _N);
     }
 
     std::reverse_iterator<_Tp const *> rend() const noexcept {
-        return std::make_reverse_iterator(_M_elements + _N);
-    }
-
-    std::reverse_iterator<_Tp *> rbegin() noexcept {
         return std::make_reverse_iterator(_M_elements);
     }
 
-    std::reverse_iterator<_Tp *> rend() noexcept {
+    std::reverse_iterator<_Tp *> rbegin() noexcept {
         return std::make_reverse_iterator(_M_elements + _N);
+    }
+
+    std::reverse_iterator<_Tp *> rend() noexcept {
+        return std::make_reverse_iterator(_M_elements);
     }
 };
 
 template <typename _Tp>
 struct Array<_Tp, 0> {
+    using value_type             = _Tp;
+    using pointer                = _Tp *;
+    using const_pointer          = _Tp const *;
+    using reference              = _Tp &;
+    using const_reference        = _Tp const &;
+    using iterator               = _Tp *;
+    using const_iterator         = _Tp const *;
+    using reverse_iterator       = _Tp *;
+    using const_reverse_iterator = _Tp const *;
 
+    _Tp &operator[](size_t __i) noexcept {
+        _LIBPENGCXX_UNREACHABLE();
+    }
+
+    _Tp const &operator[](size_t __i) const noexcept {
+        _LIBPENGCXX_UNREACHABLE();
+    }
+
+    _Tp &at(size_t __i) {
+        _LIBPENGCXX_THROW_OUT_OF_RANGE(__i, 0);
+    }
+
+    _Tp const &at(size_t __i) const {
+        _LIBPENGCXX_THROW_OUT_OF_RANGE(__i, 0);
+    }
+
+    void fill(_Tp const &) noexcept {
+    }
+
+    void swap(Array &) noexcept {
+    }
+
+    _Tp &front() noexcept {
+        _LIBPENGCXX_UNREACHABLE();
+    }
+
+    _Tp const &front() const noexcept {
+        _LIBPENGCXX_UNREACHABLE();
+    }
+
+    _Tp &back() noexcept {
+        _LIBPENGCXX_UNREACHABLE();
+    }
+
+    _Tp const &back() const noexcept {
+        _LIBPENGCXX_UNREACHABLE();
+    }
+
+    static constexpr bool empty() noexcept {
+        return true;
+    }
+
+    static constexpr size_t size() noexcept {
+        return 0;
+    }
+
+    static constexpr size_t max_size() noexcept {
+        return 0;
+    }
+
+    _Tp const *cdata() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *data() const noexcept {
+        return nullptr;
+    }
+
+    _Tp *data() noexcept {
+        return nullptr;
+    }
+
+    _Tp const *cbegin() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *cend() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *begin() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *end() const noexcept {
+        return nullptr;
+    }
+
+    _Tp *begin() noexcept {
+        return nullptr;
+    }
+
+    _Tp *end() noexcept {
+        return nullptr;
+    }
+
+    _Tp const *crbegin() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *crend() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *rbegin() const noexcept {
+        return nullptr;
+    }
+
+    _Tp const *rend() const noexcept {
+        return nullptr;
+    }
+
+    _Tp *rbegin() noexcept {
+        return nullptr;
+    }
+
+    _Tp *rend() noexcept {
+        return nullptr;
+    }
 };
+
+template <class _Tp, class ..._Ts>
+Array(_Tp, _Ts...) -> Array<_Tp, 1 + sizeof...(_Ts)>;
 
 }
